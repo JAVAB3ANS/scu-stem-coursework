@@ -15,7 +15,7 @@ COEN (Computer Science and Engineering)
 +---COEN 146 (Computer Networks)
 |   \---Labs 
 |
-+---COEN 161 (Web Development)
++---COEN 161 (Web Development I)
 |   \---Labs
 |
 +---COEN 163 (Web Usability)
@@ -53,9 +53,10 @@ COEN (Computer Science and Engineering)
 +--- COEN 278 (Advanced Web Programming)
 +--- COEN 288 (Software Ethics)
 +--- COEN 291 (Computational Creativity) 
++--- COEN 296B (Creativity Support Tools)
++--- COEN 296B (Attention Management Tools)
 
 MATH (Mathematics / Applied Mathematics)
-
 
 +--- MATH 51 / COEN 19 (Discrete Mathematics)
 +--- AMTH 108 (Probability and Statistics)
