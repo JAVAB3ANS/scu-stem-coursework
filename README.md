@@ -1,6 +1,6 @@
 # Jason Vu - Santa Clara University
 
-### A holding record of my work in my technical classes.
+### A holding record of my work in my technical classes thus far (Winter Quarter 2023)
 
 ```
 COEN (Computer Science and Engineering)
