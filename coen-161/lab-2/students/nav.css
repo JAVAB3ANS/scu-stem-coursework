@@ -1,0 +1,12 @@
+nav li a .svg-wrapper{
+	flex: 0 0 40% ;
+	padding-right:  0.5rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+nav li a .svg-wrapper svg{
+	flex: 0 0 40%;
+	color:  white;
+	height: 32px;
+}

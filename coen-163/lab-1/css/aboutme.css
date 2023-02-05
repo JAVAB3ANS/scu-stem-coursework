@@ -1,0 +1,151 @@
+/* Styling the header, body and text */
+
+body {
+	background-image: url("../images/desk.jpg");
+	width: 100%; 
+	background-repeat: repeat;
+	background-position: left;
+	padding-top: 4%;
+}
+
+.margin {
+	padding-left: 8%;
+	padding-right: 8%;
+}
+
+h1, h2 {
+	color: #ffffff;
+	font-family: "Times-New Roman", sans-serif;
+	font-size: 40px;
+	line-height: 60px;
+	text-align: center;
+	top: 20%;
+}
+
+h3 {
+	color: #ffffff;
+	font-family: "Times-New Roman", cursive;
+	font-size: 30px;
+	line-height: 60px;
+	text-align: center;
+	font-weight: 100;
+}
+
+p, li {
+	color: #ffffff;
+	font-family: "Raleway", sans-serif;
+	font-weight: 100;
+	font-style: normal;
+	text-align: center;
+	list-style-type: none;
+	font-size: 18px;
+}
+
+.text {
+	color: #000000;
+}
+
+.name {
+	color: #ffffff;
+	font-family: "Satisfy", sans-serif;
+	font-size: 20px;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.subjects {
+	width: 100%;
+	height: 40%;
+	padding: 0;
+}
+
+.panel-group {
+	width: 100%;
+	color: #ffffff;
+	color: #ffffff;
+	float: center;
+	padding: 2%;
+}
+
+.list-group-item {
+	background: #333;
+	padding: 0px;
+	width: 100%;
+	color: #ffffff;
+	border: none;
+}
+
+.panel-title {
+	font-size: 140%;
+	color: #333;
+}
+
+.face {
+	border-radius: 100%;
+}
+
+.intro {
+	padding-top: 5%;
+}
+
+.panel-group :hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.experience {
+	padding-left: 8%;
+	padding-right: 8%;
+}
+
+
+/*Checkmarks for qualifications list */
+
+.checkmark {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	-ms-transform: rotate(45deg); 
+	-webkit-transform: rotate(45deg); 
+	transform: rotate(45deg); 
+}
+
+.checkmark_circle {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	background-color: green;
+	border-radius: 11px;
+	left: 0;
+	top: 0;
+}
+
+.checkmark_stem {
+	position: absolute;
+	width: 3px;
+	height: 9px;
+	background-color: #fff;
+	left: 11px;
+	top: 6px;
+}
+
+.checkmark_kick {
+	position: absolute;
+	width: 3px;
+	height: 3px;
+	background-color: #fff;
+	left: 8px;
+	top: 12px;
+}
+
+.qualli {
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 40px;
+}
+
+.check {
+	display: inline-block;
+} 

@@ -1,0 +1,162 @@
+.accent-color{
+	background: #9b59b6
+}
+.accent-color-only{
+	color:  #9b59b6
+}
+.border-radius-sm{
+	border-radius: 4px;
+}
+.border-radius-md{
+	border-radius: 8px;
+}
+.border-radius-lg{
+	border-radius: 16px;
+}
+.padding-sm{
+	padding: 0.5rem;
+}
+.padding-md{
+	padding:  1rem;
+}
+.padding-lg{
+	padding: 3rem;
+}
+.margin-sm{
+	margin:  0.5rem;
+}
+.margin-md{
+	border-radius: 1rem;
+}
+.margin-lg{
+	margin: 3rem;
+}
+.tbale{
+	background: grey;
+
+}
+.float-left{
+	float: left;
+
+}
+.width-20{
+	width: 20%
+}
+.width-80{
+	width: 80%
+}
+.month{
+	margin-left: -109px !important;
+	background: grey; 
+	height: 140px !important;
+}
+.margin-300{
+	margin-right: -300px
+}
+.footer{
+	width: 40%; 
+	margin-right: -300px; 
+	background: grey; 
+}
+.calendar-wrapper{
+	width: 80%;
+	 margin-right: -300px
+}
+.image-search{
+	margin-top: 45px;
+}
+.padding-right{
+	padding-right: 10px;
+}
+.quiz{
+	 border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  padding: 10px;
+  background: #9b59b6;
+  color: #fff;
+  text-align: center;
+}
+.quiz11{
+	 border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  padding: 10px;
+  background: #fff;
+  border: 3px solid #9b59b6;
+  color: #000;
+  text-align: center;
+}
+.below-border{
+	-webkit-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+  -moz-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+}
+.below-calendar{
+	-webkit-box-shadow: 0px 2px 0px 0px #9b59b6;
+  -moz-box-shadow: 0px 2px 0px 0px #9b59b6;
+  box-shadow: 0px 2px 0px 0px #9b59b6;
+
+}
+.color-white{
+	color: #fff
+}
+.text-center{
+	text-align: center;
+}
+.margin-top{
+	margin-top: 20px !important;
+}
+.tr{
+
+	 -webkit-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+  -moz-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.99);
+}
+body {
+  margin:0;
+}
+
+ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  width:25%;
+  text-align:center;
+  border:1px solid black;
+  height:100%; 
+  overflow:auto;
+  position:fixed; }
+
+.ul {
+  list-style-type:none;
+  width:9%;
+  text-align:center;
+  height:100%; 
+  overflow:auto;
+  position:fixed; }
+
+
+div {
+  margin-left:25%;
+  padding:1px 16px;
+  height:1000px;
+}
+
+a {
+  display:block;
+  text-decoration:none;
+  color:black;
+  padding:8px 16px;
+ 
+}
+
+a {
+  border-bottom:1px solid black;
+}
+
+a:hover {
+  background-color:black;
+  color:white;
+}
+

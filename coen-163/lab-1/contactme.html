@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<div id="container">
+	<div id="header">
+		<!-- get bootstrap.com-->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<!-- Linking different fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Kalam" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+		<!-- Linking CSS and JQuery files -->
+		<link rel="stylesheet" type="text/css" href="./css/main.css">
+		<link rel="stylesheet" type="text/css" href="./css/contactme.css"> 
+		<!-- Linking Animate CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+		<link rel="stylesheet" href="./css/dist/animate.min.css">
+		<!-- Adding an icon to the web tab-->
+		<link rel="shortcut icon" href="/images/logo-pic.jpg"/>
+		<title>COEN 163 - Lab 1</title>
+	</div>
+	<!-- id header -->
+	<div id="body">
+		<br>
+		<br>
+		<br>
+		<!-- NAVIGATION TAB -->
+		<div class="container">
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container-fluid">
+					<div class="navbar-header"> <a class="navbar-brand" href="./index.html">JAVAB3ANS Tutoring</a> </div>
+					<ul class="nav navbar-nav">
+						<li><a href="./index.html">Home</a></li>
+						<li class="active"><a href="./contactme.html">Contact Me</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<!-- SOCIAL BUTTONS  -->
+		<div id="social-profiles">
+			<a class="sprite-socials-min sprite-facebook_22x21" href="https://www.facebook.com" title="My Facebook" target="_blank"></a>
+			<a class="sprite-socials-min sprite-linkedin_22x21" href="https://linkedin.com" title="View My LinkedIn profile" target="_blank"></a>
+		</div>
+		<!-- CONTACT FORM -->
+		<br>
+		<br>
+		<br>
+		<form id="contact_form" action="sendemail.php" method="POST" enctype="multipart/form-data">
+			<div class="row">
+				<div class="name">
+					<center>
+						<label for="name">Your name:</label>
+						<br /> </center>
+				</div>
+				<div class=t ext>
+					<center>
+						<input id="name" class="input" name="name" required type="text" value="" size="30" />
+						<br />
+					</center>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="name">
+					<center>
+						<label for="email">Your email:</label>
+						<br /> </center>
+				</div>
+				<div class=t ext>
+					<center>
+						<input id="email" class="input" name="email" type="text" value="" size="30" />
+						<br /> </center>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="name">
+					<center>
+						<label for="message">Your message:</label>
+						<br /> </center>
+				</div>
+				<div class=t ext>
+					<center>
+						<textarea id="message" class="input" name="message" rows="7" cols="30"></textarea>
+						<br /> </center>
+				</div>
+			</div>
+			<br>
+			<!--<div class = "sendbtn"><center><button type="button" class="btn btn-outline-secondary">Send</button></center></div>-->
+			<center><a class="btn" href="">Send</a></center>
+		</form>
+	</div>
+	<!-- id body -->
+</div>
+<!-- id container --> 
+</html>
