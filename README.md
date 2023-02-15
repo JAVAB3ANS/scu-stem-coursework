@@ -72,6 +72,7 @@ ARTS (Studio Art)
  
 COEN (Computer Science and Engineering)
 
++--- COEN 20 (Embedded Systems)
 +--- COEN 162 (Web Infrastructure)
 +--- COEN 164 (Web Development II)
 +--- COEN 169 (Web Information Management)
