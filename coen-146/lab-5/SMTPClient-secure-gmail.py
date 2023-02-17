@@ -1,4 +1,3 @@
-
 # Behnam Dezfouli
 #  CSEN, Santa Clara University
 
@@ -10,17 +9,23 @@
 import smtplib, ssl
 import subprocess
 
+# 1: Allow Two-Factor Authentication (2FA) on your Google Mail account
+# 2: Generate an app password where it says "App Passwords" below "2-Step Verification"
+
 port = 465  # For SSL
 email_address = input("Please enter your email address: ")
 password = input("Please enter your password: ")
 receiver_email = input("Please enter receiver's email address: ")
+message = """\
+Subject: Hi there
+
+This message is sent from Python."""
  
 # ping google.com and save the result
 # STUDENT WORK
 
-ping = subprocess.Popen(["ping", "google.com"], stdout=subprocess.PIPE)
-ping_result = ping.communicate()[0]
-ping_result = ping_result.decode("utf-8")
+ping_result = subprocess.check_output("ping -c 1 google.com", shell=True)
+print("\nPing result: ", ping_result) 
 
 print("\nNow contacting the mail server...")
 # STUDENT WORK
@@ -31,10 +36,8 @@ print("\nSending email...")
 
 # Create a secure SSL context
 
-context = ssl.create_default_context()
-
-with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-    server.login(email_address, password)
-    server.sendmail(email_address, receiver_email, ping_result)
+server = smtplib.SMTP_SSL("smtp.gmail.com", port)
+server.login(email_address, password)
+server.sendmail(email_address, receiver_email, message)
 
 print("\nEmail sent!")

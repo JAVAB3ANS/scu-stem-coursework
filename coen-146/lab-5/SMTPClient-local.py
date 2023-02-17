@@ -1,4 +1,3 @@
-
 # Behnam Dezfouli
 #  CSEN, Santa Clara University
 
@@ -8,105 +7,70 @@
 # Run a local smtp mail server using the following command before running this code:
 # python -m smtpd -c DebuggingServer -n localhost:6000
 
-
 from socket import *
-import ssl 
- 
-# Choose a mail server
-mailserver = "localhost"
- 
-# Create socket called clientSocket and establish a TCP connection with mailserver
-# STUDENT WORK
+import ssl
 
+# Choose a mail server
+mailserver = 'localhost'
+
+# Create socket called clientSocket and establish a TCP connection with mailserver
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect((mailserver, 6000))
- 
+
 # Port number may change according to the mail server
-# STUDENT WORK 
- 
+clientSocket.connect(("", 6000))
+
 recv = clientSocket.recv(1024).decode()
 print(recv)
-if recv[:3] != "220":
-    print("220 reply not received from server.")
- 
-# Send HELLO command along with the server address
-# STUDENT WORK
+if recv[:3] != '220':
+   print('220 reply not received from server.')
 
-heloCommand = "HELLO bob\r "
+# Send HELO command along with the server address
 
-clientSocket.send(heloCommand.encode())
+clientSocket.send('HELO localhost.com\r\n'.encode())
+recv = clientSocket.recv(1024).decode()
+print(recv)
 
-recv1 = clientSocket.recv(1024).decode()
-
-print(recv1)
-
- 
 # Send MAIL FROM command and print server response
-# STUDENT WORK
 
-mailFrom = "MAIL FROM: <bob@localhost>\r "
+clientSocket.send('MAIL FROM: <MrBeast@localhost.com>\r\n'.encode())
+recv = clientSocket.recv(1024).decode()
+print(recv)
 
-clientSocket.send(mailFrom.encode())
-
-recv2 = clientSocket.recv(1024).decode()
-
-print(recv2)
- 
 # Send RCPT TO command and print server response
-# STUDENT WORK
 
-rcptTo = "RCPT TO: <alice@localhost>\r "
-
-clientSocket.send(rcptTo.encode())
-
-recv3 = clientSocket.recv(1024).decode()
-
-print(recv3) 
+clientSocket.send('RCPT TO: <jvu@scu.edu>\r\n'.encode())
+recv = clientSocket.recv(1024).decode()
+print(recv)
 
 # Send DATA command and print server response
-# STUDENT WORK
 
-data = "DATA\r "
+clientSocket.send('DATA\r\n'.encode())
+recv = clientSocket.recv(1024).decode()
+print(recv)
 
-clientSocket.send(data.encode())
-
-recv4 = clientSocket.recv(1024).decode()
-
-print(recv4)
- 
 # Send message data.
-# STUDENT WORK
 
-subject = "Subject: SMTP mail client testing\r "
+clientSocket.send('354\r\n'.encode())
+clientSocket.send('Date: Wed, 30 July 2019 06:04:34\r\n'.encode())
+clientSocket.send('From: MrBeast@gmail.com\r\n'.encode())
+clientSocket.send('Subject: Please join us on Squid Game 2!\r\n'.encode())
+clientSocket.send('To: jvu@scu.edu\r\n'.encode())
 
-clientSocket.send(subject.encode())
-
-msg = "I love computer networks!\r "
-
-clientSocket.send(msg.encode())
-
-endmsg = "\r . \r "
-
-clientSocket.send(endmsg.encode())
-
-recv5 = clientSocket.recv(1024).decode()
-
-print(recv5)
- 
 # Message to send
-# STUDENT WORK
- 
+
+clientSocket.send('''Yo yo yo it's ya boi Jimmy Beast.
+\nActually JK this email is from SMTPClient-local.py. PRANKED.
+\nLike, comment, subscribe,
+\n"Mr.Beast"'''.encode())
+
 # Message ends with a single period
-# STUDENT WORK
- 
- 
+clientSocket.send('\r\n.\r\n')
+
 # Send QUIT command and get server response
-# STUDENT WORK
+clientSocket.send('QUIT\r\n')
+recv = clientSocket.recv(1024).decode()
 
-quit = "QUIT\r "
+if recv[:3] != '221':
+   print('221 reply not received from server.')
 
-clientSocket.send(quit.encode())
-
-recv6 = clientSocket.recv(1024).decode()
-
-print(recv6) 
+clientSocket.close() 
