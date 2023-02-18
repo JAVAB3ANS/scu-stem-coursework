@@ -15,8 +15,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python %s <port number>" % (sys.argv[0]))
         sys.exit() 
-    
-    # STUDENT WORK
+     
     port_number = (int)(sys.argv[1])
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,9 +35,7 @@ if __name__ == "__main__":
   
         # TypeError: argument should be integer or bytes-like object, not 'str'
         message = message.decode("utf-8")
-        print(message)
-
-        # STUDENT WORK
+        print(message) 
 
         # get file name from the request
 
@@ -46,9 +43,7 @@ if __name__ == "__main__":
         end_f = message.find(" HTTP/1.1")
 
         file_name = message[start_f + 1: end_f]
-
-        # STUDENT WORK
-
+  
         # get file extension from the request 
         
         start_index = message.find(".")
@@ -57,9 +52,7 @@ if __name__ == "__main__":
         file_extension = message[start_index + 1: end_index]
         print(file_extension)
  
-        try:
-
-            # STUDENT WORK 
+        try: 
             if (file_extension == "html"):
                 response_headers = { "Content-Type": "text/html; encoding=utf8" }
             elif (file_extension == "jpg"):
@@ -77,8 +70,7 @@ if __name__ == "__main__":
             connectionSocket.send(content)
                  
         # Raised when an I/O operation (such as a print statement, the built-in open() function or a method of a file object) fails for an I/O-related reason, e.g., "file not found" or "disk full"
-        except IOError:
-            # STUDENT WORK 
+        except IOError: 
             connectionSocket.send("HTTP/1.1 404 Not Found\n" + "Content-Type: text/html; encoding=utf8\n\r\n")
             connectionSocket.send("<html><body><h1>404 ERROR</h1>,</body></html>")
 

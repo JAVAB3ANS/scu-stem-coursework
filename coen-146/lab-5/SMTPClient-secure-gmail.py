@@ -16,23 +16,18 @@ port = 465  # For SSL
 email_address = input("Please enter your email address: ")
 password = input("Please enter your password: ")
 receiver_email = input("Please enter receiver's email address: ")
+ 
+# ping google.com and save the result 
+
+ping_result = subprocess.check_output("ping -c 1 google.com", shell=True) 
+
 message = """\
 Subject: Hi there
 
-This message is sent from Python."""
- 
-# ping google.com and save the result
-# STUDENT WORK
+This message is sent from Python.""" + ping_result
 
-ping_result = subprocess.check_output("ping -c 1 google.com", shell=True)
-print("\nPing result: ", ping_result) 
-
-print("\nNow contacting the mail server...")
-# STUDENT WORK
- 
-print("\nSending email...")
-
-# STUDENT WORK
+print("\nNow contacting the mail server...")  
+print("\nSending email...") 
 
 # Create a secure SSL context
 
