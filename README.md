@@ -12,8 +12,7 @@ COEN (Computer Science and Engineering)
 +---COEN 21 / ELEN 21 (Digital Logic Design) - Dr. Tokunbo Ogunfunmi
 |   \---Labs 
 |
-+---COEN 146 (Computer Networks) - Dr. Behnam Dezfouli
-|   \---Labs 
++---COEN 146 (Computer Networks) - Dr. Keyvan Moataghed
 |
 +---COEN 161 (Web Development I) - Professor Arman Elahi
 |   \---Labs
@@ -81,7 +80,6 @@ COEN (Computer Science and Engineering)
 
 MATH (Mathematics / Applied Mathematics)
 
-+--- MATH 51 / COEN 19 (Discrete Mathematics)
 +--- AMTH 108 (Probability and Statistics)
 
 ```
