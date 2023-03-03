@@ -14,42 +14,38 @@
 int state = 0; // we only have two states: 0 and 1
 int sock;
 struct sockaddr_in serverAddr;
-socklen_t addr_size;
-
+socklen_t addr_size; 
 
 // list of functions
-int main (int, char *[]);
-int my_receive (PACKET *);
-int calc_checksum (char *, int);
-
-
-
+int main(int, char *[]);
+int my_receive(PACKET *);
+int calc_checksum(char *, int); 
+ 
 int main (int argc, char *argv[]) {
 	FILE	*fp;
 	int		n;
-	PACKET	buf;
-
+	PACKET	buf; 
 
     if (argc != 2) {
-        printf ("need the port number\n");
+        printf("need the port number\n");
         return 1;
     }
 
 	// create server address
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_port = htons (atoi (argv[1]));
-	serverAddr.sin_addr.s_addr = htonl (INADDR_ANY);
-	memset (serverAddr.sin_zero, '\0', sizeof (serverAddr.sin_zero));
+	serverAddr.sin_port = htons (atoi(argv[1]));
+	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	memset(serverAddr.sin_zero, '\0', sizeof(serverAddr.sin_zero));
 
 	// create socket
 	if ((sock = socket (AF_INET, SOCK_DGRAM, 0)) < 0) {
-		printf ("socket error\n");
+		printf("socket error\n");
 		return 1;
 	}
 
 	// bind
-	if (bind (sock, (struct sockaddr *)&serverAddr, sizeof (serverAddr)) != 0) {
-		printf ("bind error\n");
+	if (bind (sock, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) != 0) {
+		printf("bind error\n");
 		return 1;
 	}
 
@@ -57,34 +53,30 @@ int main (int argc, char *argv[]) {
     
 	// receive name of the file
     // my_receive() function ensures the received data chunks are not corrupted
-	if ((n = my_receive (&buf)) <= 0) {
-		printf ("could not get the name of the file\n");
+	if ((n = my_receive(&buf)) <= 0) {
+		printf("could not get the name of the file\n");
 		return 1;
 	}
     printf ("File name has been received!\n");
-    
-
+     
 	// open file
-	if ((fp = fopen (buf.data, "wb")) == NULL) {
-		printf ("error fopen\n");
+	if ((fp = fopen(buf.data, "wb")) == NULL) {
+		printf("error fopen\n");
 		return 1;
 	}
-
     
-	printf ("Receiving file %s ... \n", buf.data);
+	printf("Receiving file %s ... \n", buf.data);
     // my_receive() function ensures the received data chunks are not corrupted
-	while ((n = my_receive (&buf)) > 0) {
-		printf ("writing to file... n = %d\n", n);
-		fwrite (buf.data, 1, n, fp);  
+	while ((n = my_receive(&buf)) > 0) {
+		printf("writing to file... n = %d\n", n);
+		fwrite(buf.data, 1, n, fp);  
 	}
 
-	close (sock);
-	fclose (fp);
+	close(sock);
+	fclose(fp);
 
 	return 0;
-}
-
-
+} 
 
 // my_receive() function ensures the received data chunks are not corrupted
 int my_receive (PACKET *recv_pck) {
@@ -109,43 +101,50 @@ int my_receive (PACKET *recv_pck) {
 		if ((nbytes = recvfrom (sock, recv_pck, sizeof(PACKET), 0, &ret_addr, &addr_size)) < 0)
 			return -1;
 	
-        printf ("Received a UDP packet!\n");
-        
+        printf("Received a UDP packet!\n");
+		
+		// calculate checksum
 		cs_in = recv_pck->header.checksum;
 		recv_pck->header.checksum = 0;
-        
-        // recalculate checksum
-        // STUDENT WORK
+		cs_calc = calc_checksum ((char *)recv_pck, nbytes);
+		recv_pck->header.checksum = cs_in;
         
         // check if checksum matches, and the sequence number is correct too
         if (cs_in == cs_calc  &&  recv_pck->header.seq_ack == state) {
-            printf ("Checksum passed! Sequence number matched!\n");
+            printf("Checksum passed! Sequence number matched!\n");
 
 			// good packet
-            // STUDENT WORK
+			// send ack
+			ack_packet.seq_ack = state;
+			ack_packet.checksum = calc_checksum ((char *)&ack_packet, sizeof(HEADER));
             
-            
-            // simulating erroneous channel...corruption and loss
-            // STUDENT WORK
-            
-			// now we are expecting the next packet
-            // STUDENT WORK
-            
+            // simulating erroneous channel...corruption and loss 
+
+			// send ack
+			if (sendto (sock, &ack_packet, sizeof(HEADER), 0, &ret_addr, addr_size) < 0) return -1;	
+
+			// change state
+			state = 1 - state;
+			
+			// return the number of bytes received
 			return recv_pck->header.len;
+
 		} else {
-            printf ("Checksum/sequence number check failed!\n");
+            printf("Checksum/sequence number check failed!\n");
 
 			// bad packet
-            // STUDENT WORK
+			// send ack for the last good packet
+			ack_packet.seq_ack = 1 - state;
+			ack_packet.checksum = calc_checksum ((char *)&ack_packet, sizeof(HEADER)); 
             
-            printf ("Resending ack for sequence number: %d...\n", ack_packet.seq_ack );
-
+            printf("Resending ack for sequence number: %d...\n", ack_packet.seq_ack ); 
             
             // simulating erroneous channel...corruption and loss
-            // STUDENT WORK
+
+			// send ack
+			if (sendto(sock, &ack_packet, sizeof(HEADER), 0, &ret_addr, addr_size) < 0) return -1;
 
 		}
-
 	}
 
 	return -1;
@@ -156,7 +155,11 @@ int calc_checksum (char *buf, int tbytes) {
     char    cs = 0;
     char    *p;
 
-    // STUDENT WORK
+	p = buf;
+	for (i = 0; i < tbytes; i++) {
+		cs += *p;
+		p++;
+	}
     
     return (int)cs;
 } 

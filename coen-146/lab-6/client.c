@@ -8,7 +8,7 @@
 //      -- packet corruption, and packet loss
 
 
-#include	"tfv1.h"
+#include "tfv1.h"
 
 // global variables
 int state = 0; // only two states: 0 and 1
@@ -18,19 +18,16 @@ struct sockaddr_in serverAddr;
 socklen_t addr_size;  
 
 // list of functions
-int main (int, char *[]);
+int main(int, char *[]);
 
 // to reliably send a chunk of data
-void my_send (char *, int);
+void my_send(char *, int);
 
 // part of the my_send() function
-void recv_ack (PACKET *, int);
+void recv_ack(PACKET *, int);
 
 // computes checksum using XOR of bytes
-int calc_checksum (char *, int);
-
-
-
+int calc_checksum(char *, int);
 
 int main (int argc, char *argv[]) {
     char	buff[SIZE];
@@ -38,112 +35,110 @@ int main (int argc, char *argv[]) {
     int		r;
     
     if (argc != 5) {
-        printf ("usage:usage: ./client port IP source_file dest_file\n");
+        printf("usage:usage: ./client port IP source_file dest_file\n");
         return 1;
     }
-    
     
     // configure address
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons (atoi (argv[1]));
-    serverAddr.sin_addr.s_addr = inet_addr (argv[2]);
-    memset (serverAddr.sin_zero, '\0', sizeof (serverAddr.sin_zero));
-    addr_size = sizeof (serverAddr);
-    
+    serverAddr.sin_port = htons(atoi (argv[1]));
+    serverAddr.sin_addr.s_addr = inet_addr(argv[2]);
+    memset(serverAddr.sin_zero, '\0', sizeof (serverAddr.sin_zero));
+    addr_size = sizeof(serverAddr);
     
     // create UDP socket
-    if ((sock = socket (PF_INET, SOCK_DGRAM, 0)) < 0) {
-        printf ("socket error\n");
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
+        printf("socket error\n");
+        return 1;
+    } 
+    
+    printf("UDP socket has been created!\n");
+    
+    // open the file to be sent
+    if ((fp = fopen(argv[3], "rb")) == NULL) {
+        printf("fopen error\n");
         return 1;
     }
-    printf ("UDP socket has been created!\n");
-    
-    if ((fp = fopen (argv[3], "rb")) == NULL) {
-        printf ("fopen error\n");
-        return 1;
-    }
-    printf ("Source file opened successfully!\n");
 
+    printf("Source file opened successfully!\n"); 
     
-    printf ("Sending file name...");
-    
-    
-    printf ("Done!\n");
+    // send the name of the file to the server
+    strcpy(buff, argv[4]);
+    my_send(buff, strlen (buff));
 
-    
-    printf ("Now sending source file contents...");
-    
-    printf ("Done!\n");
-    
+    // send the file to the server
+    printf("Sending the file to the server...\n");
+
+    while (1) {
+        // read data from the file
+        r = fread(buff, 1, SIZE, fp);
+        if (r == 0) {
+            break;
+        }
+        my_send(buff, r);
+    } 
     
     // After transmitting the file, a packet with no data (len = 0) is sent to
     // notify the receiver that the file transfer has completed
-    printf ("Informing the server about the completion of file transmission...\n");
+    printf("Informing the server about the completion of file transmission...\n");
     
-
-    printf ("Done!\n");
+    printf("Done!\n");
     
-    
-    fclose (fp);
-    close (sock);
+    fclose(fp);
+    close(sock);
     
     return 0;
-    
 }
 
 
 //***********************
 // sends data (of size nbbytes) reliably to the sender
 // **********************
-void my_send (char *data, int nbytes) {
+void my_send(char *data, int nbytes) {
     PACKET	buf;
     int		r;
      
     // copy data into the packet
-    memcpy (buf.data, data, nbytes);
+    memcpy(buf.data, data, nbytes);
     buf.header.len = nbytes;
 
     // set the sequence number
     buf.header.seq_ack = state;
-
-    
+ 
     //default checksum value is 0
-    buf.header.checksum = 0;
-    
+    buf.header.checksum = 0; 
     
     // simulating erroneous channel... corruption and loss
     // the probability of correct checksum is 80%
     r = rand () % 10;
-    if (r <= 8)
+    if (r <= 8) {
         buf.header.checksum = calc_checksum ((char *)&buf, sizeof (HEADER) + nbytes);
-    else
-        printf ("Packet got corrupted on the way!\n");
-    
+    } else {
+        printf("Packet got corrupted on the way!\n");
+    }
     
     // the probability of no packet loss is 80%
     r = rand () % 10;
     if (r <= 8) {
         // send packet
-        // STUDENT WORK
+        sendto(sock, &buf, sizeof(HEADER) + nbytes, 0, (struct sockaddr *)&serverAddr, addr_size);
+        printf("Packet sent successfully!\n");
     } else
-        printf ("Packet got lost on the way!\n");    
+        printf("Packet got lost on the way!\n");    
     
     // wait for ack
-    recv_ack (&buf, nbytes);
-
+    recv_ack(&buf, nbytes);
+    
     // change state
     state = 1 - state;
 
-    
     return;
-}
-
-
+} 
 
 //***********************
 // wait for ack
 // **********************
-void recv_ack (PACKET *buf, int nbytes) {
+void recv_ack(PACKET *buf, int nbytes) {
     HEADER	receive_buf;
     int		cs;
     int		r;
@@ -160,15 +155,14 @@ void recv_ack (PACKET *buf, int nbytes) {
     
     while (1) {
         while (1) {
-            FD_ZERO (&readfds); // Clear an fd_set
+            FD_ZERO(&readfds); // Clear an fd_set
             
             // void FD_SET (int filedes, fd_set *set)
             // This macro adds filedes to the file descriptor set set.
-            FD_SET (sock, &readfds);
+            FD_SET(sock, &readfds);
             
             tv.tv_sec = 5;
             tv.tv_usec = 0;
-            
             
             // int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
             // maxfd: maximum number of descriptor ready.
@@ -182,36 +176,47 @@ void recv_ack (PACKET *buf, int nbytes) {
             // interesting happens
             
             // in the following we only pass readfds because we are interested in reading only
-            rv = select (sock + 1, &readfds, NULL, NULL, &tv);
-            
-            
+            rv = select(sock + 1, &readfds, NULL, NULL, &tv);
+             
             // return value is 1 when there is a bit set in readfds
             // so there is data to be read
-            if (rv == 1)
-                {
-                printf ("ack received\n");
+            if (rv == 1) {
+                printf("ack received\n");
                 break;
+            } else {
+                printf("ack not received\n");
             }
             
             // this means select() returned due to timeout event
             else if (rv == 0) {
-                printf ("timeout\n");
+                printf("timeout\n");
                 counter++;
                 if (counter == 3) {
-                    printf ("Server is not responding. Exiting...\n");
-                    exit (1);
-                } 
-                else {
-                    // resend the packet and wait for ack again
-
-                    // STUDENT WORK
-
-
+                    printf("Server is not responding. Exiting...\n");
+                    exit(1);
+                } else {
+                    printf("Resending packet...\n");
+                    // resend packet
+                    // simulating erroneous channel...corruption and loss 
+                    r = rand () % 10;
+                    if (r <= 8) {
+                        buf->header.checksum = calc_checksum ((char *)buf, sizeof(HEADER) + nbytes);
+                    } else { 
+                        printf("Packet got corrupted on the way!\n");
+                    }
+                    
+                    // the probability of no packet loss is 80%
+                    r = rand () % 10;
+                    if (r <= 8) {
+                        // send packet
+                        sendto(sock, buf, sizeof(HEADER) + nbytes, 0, (struct sockaddr *)&serverAddr, addr_size);
+                        printf("Packet sent successfully!\n");
+                    } else { 
+                        printf("Packet got lost on the way!\n");
+                    }
                 }
             }
-        }
-        
-        
+        } 
         
         // we break the previous while(1) loop when there is data to be read (ack received)
         
@@ -219,28 +224,38 @@ void recv_ack (PACKET *buf, int nbytes) {
         
         cs = receive_buf.checksum;
         receive_buf.checksum = 0;
-        
-        
+         
         // recalculate checksum of the received ack packet
-    
-        
+        if (cs == calc_checksum ((char *)&receive_buf, sizeof (HEADER))) {
+            if (receive_buf.seq_ack == state) {
+                printf("ack is correct\n");
+                break;
+            } else {
+                printf("ack is not for the current packet\n");
+            }
+        } else {
+            printf("ack is corrupted\n");
+        } 
         
         // a bad ack has been received (corrupted or not for the current packet)
 
-        
-        
+        printf("Resending packet...\n");
+  
         // resend packet
         // simulating erroneous channel...corruption and loss 
+        r = rand () % 10;
+        if (r <= 8) {
+            buf->header.checksum = calc_checksum ((char *)buf, sizeof(HEADER) + nbytes);
+        } else {
+            printf("Packet got corrupted on the way!\n");
+        } 
     }
 }
-
-
-
+ 
 //***********************
 // calculate checksum by using XOR
 // **********************
-int calc_checksum (char *buf, int tbytes)
-{
+int calc_checksum (char *buf, int tbytes) {
     int		i;
     char	cs = 0;
     char 	*p;
@@ -251,9 +266,4 @@ int calc_checksum (char *buf, int tbytes)
         cs = cs ^ *p++;
     
     return (int)cs;
-}
-
-
-
-
-
+} 
