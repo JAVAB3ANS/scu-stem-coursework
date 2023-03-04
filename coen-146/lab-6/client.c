@@ -8,8 +8,7 @@
 //      -- packet corruption, and packet loss
 
 
-/*Checklist, what the solution needs to have (in progress...):
-
+/*Checklist, what the solution needs to have (in progress...): 
 
    UDP protocol
    Using sequence numbers (0 or 1)
@@ -18,42 +17,28 @@
    Client/Server uses ACK messages.
    Deal with duplicate ACK messages
    Use a random function for testing to simulate package losses and errors.
-   */
-
-
-
+   */ 
 
 #include "tfv1.h"
-
-
+ 
 // global variables
 int state = 0; // only two states: 0 and 1
 int sock;
 struct sockaddr_in serverAddr;
-
-
+ 
 socklen_t addr_size;
-
-
-
-
+ 
 // list of functions
 int main (int, char *[]);
-
-
+ 
 // to reliably send a chunk of data
 void my_send (char *, int);
-
-
+ 
 // part of the my_send() function
-void recv_ack (PACKET *, int);
-
+void recv_ack (PACKET *, int); 
 
 // computes checksum using XOR of bytes
-int calc_checksum (char *, int);
-
-
-
+int calc_checksum (char *, int); 
 
 int main (int argc, char *argv[]) {
    char    buff[SIZE];
@@ -83,25 +68,17 @@ int main (int argc, char *argv[]) {
        printf ("fopen error\n");
        return 1;
    }
-   printf ("Source file opened successfully!\n");
+   printf ("Source file opened successfully!\n"); 
+ 
+   printf ("Sending file name..."); 
 
+   my_send(argv[4], sizeof(argv[4] + 1)); 
 
+   printf ("Done!\n");  
   
-   printf ("Sending file name...");
+   printf ("Now sending source file contents..."); 
 
-
-   my_send(argv[4], sizeof(argv[4] + 1));
-
-
-   printf ("Done!\n");
-
-
-  
-   printf ("Now sending source file contents...");
-
-
-   printf ("Done!\n");
-  
+   printf ("Done!\n"); 
   
    // After transmitting the file, a packet with no data (len = 0) is sent to
    // notify the receiver that the file transfer has completed
@@ -116,10 +93,7 @@ int main (int argc, char *argv[]) {
   
    return 0;
   
-}
-
-
-
+} 
 
 //***********************
 // sends data (of size nbbytes) reliably to the sender
@@ -138,12 +112,13 @@ void my_send (char *data, int nbytes)
   
    // simulating erroneous channel... corruption and loss
    // the probability of correct checksum is 80%
-   /*r = rand () % 10;
-   if (r <= 8)
+   r = rand () % 10;
+   if (r <= 8) {
        buf.header.checksum = calc_checksum ((char *)&buf, sizeof (HEADER) + nbytes);
-   else
-       printf ("Packet got corrupted on the way!\n");*/
-  
+   } else {
+       printf ("Packet got corrupted on the way!\n");
+   }
+
    // the probability of no packet loss is 80%
    buf.header.checksum = calc_checksum ((char *)&buf, sizeof (HEADER) + nbytes);
    sendto(sock, &buf, sizeof(HEADER)+nbytes, 0, (struct sockaddr*)&serverAddr, addr_size);
@@ -153,12 +128,7 @@ void my_send (char *data, int nbytes)
   
    return;
 }
-
-
-
-
-
-
+  
 //***********************
 // wait for ack
 // **********************
@@ -188,8 +158,7 @@ void recv_ack (PACKET *buf, int nbytes)
           
            tv.tv_sec = 5;
            tv.tv_usec = 0;
-          
-          
+           
            // int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
            // maxfd: maximum number of descriptors ready.
            // timeout: How long to wait for select to return.
@@ -238,8 +207,7 @@ void recv_ack (PACKET *buf, int nbytes)
       
        cs = receive_buf.checksum;
        receive_buf.checksum = 0;
-      
-      
+       
        // recalculate checksum of the received ack packet
        receive_buf.checksum = calc_checksum((char *)&buf, sizeof (HEADER) + nbytes);
       
@@ -261,8 +229,7 @@ void recv_ack (PACKET *buf, int nbytes)
                     state = 0;
                 }
                 break;
-            }
-      
+            } 
       
        // resend packet
        // simulating erroneous channel...corruption and loss
@@ -284,12 +251,7 @@ void recv_ack (PACKET *buf, int nbytes)
 
    }
 }
-
-
-
-
-
-
+ 
 //***********************
 // calculate checksum by using XOR
 // **********************
@@ -299,11 +261,12 @@ int calc_checksum (char *buf, int tbytes) {
    char    *p;
 
 
-   p = buf; // p points to the beginning of the buffer
-   for (i = 0; i < tbytes; i++) // tbytes is the total number of bytes in the buffer
-	   cs = cs ^ *p++; 
-
-   //cs ^ *p
+   p = (char *)buf;
+   cs = *p;
+    for (i = 1; i < tbytes; i++) {
+         cs = cs ^ *p;
+         printf("calc_checksum20: i=%3d, cs=%3d, char=%c char_value=%d\n", i, cs, (char)*p, *p);
+    }
   
    return (int)cs;
-}
+} 
